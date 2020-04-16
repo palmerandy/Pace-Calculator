@@ -1,0 +1,68 @@
+﻿@page "/"
+
+<h1>Pace Calculator</h1>
+
+<fieldset>
+    <label>Time</label>
+    <input type="number" name="GoalHours" id="GoalHours" @bind="GoalHours" placeholder="hours" class="timespan" /> :
+    <input type="number" name="GoalMinutes" id="GoalMinutes" @bind="GoalMinutes" placeholder="minutes" class="timespan" /> :
+    <input type="number" name="GoalSeconds" id="GoalSeconds" @bind="GoalSeconds" placeholder="seconds" class="timespan" />
+</fieldset>
+<fieldset>
+    <label for="Distance">Distance</label>
+    <select name="Distance" id="Distance" @bind="Distance">
+        <option label=" "></option>
+        <option value="@Calculator.Distance5Km">5 km</option>
+        <option value="@Calculator.Distance5Km">5 km</option>
+        <option value="@Calculator.Distance10Km">10 km</option>
+        <option value="@Calculator.DistanceHalfMarathonInKm">Half marathon</option>
+        <option value="@Calculator.DistanceMarathonInKm">Marathon</option>
+    </select>
+</fieldset>
+<button class="btn btn-primary" @onclick="CalculatePace" disabled="@IsDisabled">Calculate</button>
+
+@if (TimeSpan.HasValue)
+{
+    <div class="alert alert-success" role="alert">
+        @FormatTimeSpan()
+    </div>
+}
+
+
+@code {
+
+    //public class GoalTime
+    //{
+    //	public int? Hours { get; set; }
+    //	public int? Minutes { get; set; }
+    //	public int? Seconds { get; set; }
+
+    //	//public TimeSpan ToTimeSpan()
+    //	//{
+    //	//	return new TimeSpan(Hours.Value, Minutes.Value, Seconds.Value);
+    //	//}
+    //}
+    //private GoalTime Goal { get; set; }
+
+    public int? GoalHours { get; set; }
+    public int? GoalMinutes { get; set; }
+    public int? GoalSeconds { get; set; }
+
+    private double? Distance { get; set; }
+    private bool IsDisabled => !(GoalHours.HasValue && GoalMinutes.HasValue && GoalSeconds.HasValue && Distance.HasValue);
+    private TimeSpan? TimeSpan = null;
+
+    private void CalculatePace()
+    {
+        //TODO:remove if with validation?
+        if (!IsDisabled)
+        {
+            TimeSpan = Calculator.FromGoalTime(new TimeSpan(GoalHours.Value, GoalMinutes.Value, GoalSeconds.Value), Distance.Value);
+        }
+    }
+
+    private string FormatTimeSpan()
+    {
+        return TimeSpan.HasValue ? TimeSpan.Value.ToString("g") + " /km" : "";
+    }
+}
