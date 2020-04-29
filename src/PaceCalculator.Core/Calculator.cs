@@ -13,5 +13,11 @@ namespace PaceCalculator.Core
             var result = targetTime.TotalMilliseconds / distanceInKm;
             return new TimeSpan(0, 0, 0, 0, (int)result);
         }
+
+        public static TimeSpan FromGoalTime(GoalTime goalTime, double distanceInKm)
+        {
+            var targetTime = goalTime.ToTimeSpan();
+            return FromGoalTime(targetTime, distanceInKm);
+        }
     }
 }

@@ -116,6 +116,9 @@ app {
 .validation-message {
     color: red;
 }
+.timespan {
+    width: 5em;
+}
 
 #blazor-error-ui {
     background: lightyellow;
